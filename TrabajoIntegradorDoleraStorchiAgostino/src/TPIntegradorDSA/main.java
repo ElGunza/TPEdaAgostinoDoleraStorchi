@@ -35,8 +35,9 @@ public class main {
 			int option = Integer.parseInt(JOptionPane.showInputDialog(null,
 							"1) Registrar nuevo usuario \n"+
 							"2) Ingresar con usuario \n" +
-							"3) Salir \n" +
-							"Ingrese opción del 1 al 3", "Menú Mecánico", JOptionPane.QUESTION_MESSAGE));
+							"3) Imprimir lista Clientes \n" +
+							"4) Salir \n" +
+							"Ingrese opción del 1 al 4", "Menú Mecánico", JOptionPane.QUESTION_MESSAGE));
 		
 			switch(option) {
 			case 1:
@@ -45,7 +46,9 @@ public class main {
 				break;
 			case 2:
 				login(a); break;
-			case 3:
+			case 3:	
+				imprimirClientes(a);
+			case 4:
 				System.exit(0); break;
 			}
 		
@@ -113,7 +116,9 @@ public class main {
 		    String value4 = localidad.getText();
 		}
 		
+		//Crea password numerica y la convierte a string
 		int password = (int) (Math.random()*10000);
+		String pass = String.valueOf(password);
 		
 		String usuario = nombre.getText().toLowerCase() + "."+ apellido.getText().toLowerCase();
 		System.out.println(usuario);
@@ -143,29 +148,42 @@ public class main {
 		
 		int seleccion = JOptionPane.showOptionDialog( null,"Seleccione el tipo de servicio que usted desea adquirir: ",
 				  "Servicio Mecánico",JOptionPane.YES_NO_CANCEL_OPTION,
-				   JOptionPane.QUESTION_MESSAGE,null,// null para icono por defecto.
+				   JOptionPane.QUESTION_MESSAGE,null,// null para icono por defecto. //Genera un menu para guardar el tipo de servicio
 				  new Object[] { "Auxilio Mecánico", "Grúa", "Cerrajero",},null);
-				     
-				 if (seleccion != -1){
-				           servicio = seleccion+1;
-				 }
+	
+				
+		int servAux = 0;
+		int servGrua = 0;
+		int servCer = 0;
 		
-
 		tipo = JOptionPane.showOptionDialog( null,"Seleccione el tipo de servicio que usted desea adquirir: ",
 						  "Servicio Mecánico",JOptionPane.YES_NO_CANCEL_OPTION,
 						JOptionPane.QUESTION_MESSAGE,null,// null para icono por defecto.
 						new Object[] { "Oro", "Plata",},null);
-						     
-					if (seleccion != -1){
-						         tipo = tipo+1;
-						}
-				 
-				 
+					String tipo1 = "";
+															//Genera un menu para guardar el tipo de cliente
+					if (tipo == 1){
+						tipo1 = "Oro";
+						servAux = 100;
+						servGrua = 3;					//Agrega cantidad de servicios dependiendo del tipo de cliente
+						servCer = 4;
+					}else if(tipo == 2){
+						tipo1 = "Plata";
+						servAux = 100;
+						servGrua = 2;
+						servCer = 3;
+					}
 				 
 		
-		//Cliente user = new Cliente (nombre.getText(), apellido.getText(), tipo.getText(), localidad.getText(), usuario, password, servicio);
-		//Usuario.add(user);
 		
+				 
+		
+		//Genera el cliente con los datos dados y lo agrega al ArrayList
+		Cliente user = new Cliente (nombre.getText(), apellido.getText(), localidad.getText(), servicio, tipo1, usuario, pass, servAux, servGrua, servCer);
+		Usuario.add(user);
+		
+		
+		//Escribe mensaje avisando que se cargo correctamente y los datos del usuario
 		String message2 ="";
 		
 		message2 = message2 + "	Los datos del usuario son:\n\n "+ usuario + " \n"+ password + "\n\n >>Recuérdelos para volver a iniciar sesión<< " ;
@@ -205,6 +223,17 @@ public class main {
 			
 		}
 		
+	}
+	
+	public static void imprimirClientes(ArrayList<Cliente> lista) {
+		for(Cliente e : lista) {
+			
+			System.out.println("Cliente: " + e.getNombre() + " " + e.getApellido() + ".\nUser: " + e.getUser() + "  Password: " + e.getPassword() + ", es de tipo " + e.getTipo() + "." +
+								"\nLe quedan " + e.getServicioAux() + " Servicios de Auxilio Mecanico." +
+								"\n          " + e.getServicioGrua() + " Servicios de Grua." +
+								"\n          " + e.getServicioCer() + " Servicios de Cerrajero.\n");
+			
+		}
 	}
 	
 }
