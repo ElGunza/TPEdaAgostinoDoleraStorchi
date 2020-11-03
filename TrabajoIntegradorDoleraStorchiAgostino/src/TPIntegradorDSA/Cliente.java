@@ -2,7 +2,6 @@ package TPIntegradorDSA;
 
 public class Cliente extends Persona{
 	String localidad;
-	int servicio;
 	String tipo;
 	String user;
 	String password;
@@ -10,11 +9,10 @@ public class Cliente extends Persona{
 	int servicioGrua;
 	int servicioCer;
 	
-	public Cliente(String nombre, String apellido, String localidad, int servicio, String tipo, String user,
+	public Cliente(String nombre, String apellido, String localidad, String tipo, String user,
 			String password, int servicioAux, int servicioGrua, int servicioCer) {
 		super(nombre, apellido);
 		this.localidad = localidad;
-		this.servicio = servicio;
 		this.tipo = tipo;
 		this.user = user;
 		this.password = password;
@@ -28,12 +26,7 @@ public class Cliente extends Persona{
 	public void setLocalidad(String localidad) {
 		this.localidad = localidad;
 	}
-	public int getServicio() {
-		return servicio;
-	}
-	public void setServicio(int servicio) {
-		this.servicio = servicio;
-	}
+
 	public String getTipo() {
 		return tipo;
 	}

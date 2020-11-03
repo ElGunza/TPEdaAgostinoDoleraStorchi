@@ -15,10 +15,11 @@ public class main {
 		
 		ArrayList <Cliente> Mecanico = new ArrayList <Cliente>(); 
 		
-		Cliente Lautaro = new Cliente("Lautaro", "Perez", "Escobar", 2 ,"Oro", "lautaro.perez16", "123", 100, 3, 4);
+		Cliente Lautaro = new Cliente("Lautaro", "Perez", "Escobar","Oro", "lautaro.perez", "123", 100, 3, 4);
+		Cliente Gian = new Cliente("Gian", "Storki", "Pilar", "Plata", "gian.storchi", "456", 100, 2, 3);
 		
 		Mecanico.add(Lautaro);
-		
+		Mecanico.add(Gian);
 		
 		menu(Mecanico);
 		
@@ -60,6 +61,8 @@ public class main {
 		JTextField user = new JTextField();
 		JTextField pass = new JTextField();
 		Boolean register = false;
+		String name = "";
+		String surname = "";
 		int matricula = 0;
 		
 		Object[] message = {
@@ -69,25 +72,27 @@ public class main {
 			Component parent = null;
 			int option = JOptionPane.showConfirmDialog(parent, message, "Ingrese sus credenciales ", JOptionPane.OK_CANCEL_OPTION);
 			if (option == JOptionPane.OK_OPTION){
-			    String value1 = user.getText();
+			    String value1 = user.getText();				//Panel para ingresar credenciales
 			    String value2 = pass.getText();
 			}
 		
-		String StrPassword = pass.getText();
+		String StrPassword = pass.getText();				//Convierte password en String
 		
 		
 			
 		for (int i=0; i<lista.size(); i++) {
 			if ((lista.get(i).getUser().equalsIgnoreCase(user.getText()) && (lista.get(i).getPassword().equals(StrPassword)))) {
-				register = true;
+				register = true;							//Valida si existe un cliente con las credenciales dadas
+				name = lista.get(i).getNombre();
+				surname = lista.get(i).getApellido();
 			}
 		}	
 			
-		if (register == false) {
+		if (register == false) {						//Devuelve un mensaje si esta o no registrado
 			JOptionPane.showMessageDialog(null, "Las credenciales son incorrectas o usted no está registrado");
 		} else {
 			JOptionPane.showMessageDialog(null, "¡Inicio de sesión con éxito!");
-			ServicioOption(lista);
+			ServicioOption(lista, name, surname);
 		}
 		
 	}
@@ -100,7 +105,6 @@ public class main {
 		JTextField apellido = new JTextField();
 		JTextField localidad = new JTextField();
 		Boolean register = false;
-		int servicio = 0;
 		int tipo = 0;
 		
 		Object[] message = {
@@ -110,7 +114,7 @@ public class main {
 		};
 		Component parent = null;
 		int option = JOptionPane.showConfirmDialog(parent, message, "Ingrese sus datos personales: ", JOptionPane.OK_CANCEL_OPTION);
-		if (option == JOptionPane.OK_OPTION){
+		if (option == JOptionPane.OK_OPTION){			//Panel para ingresar los datos
 		    String value1 = nombre.getText();
 		    String value2 = apellido.getText();
 		    String value4 = localidad.getText();
@@ -144,12 +148,6 @@ public class main {
 			}
 		} while(register = false);
 		*/
-		
-		
-		int seleccion = JOptionPane.showOptionDialog( null,"Seleccione el tipo de servicio que usted desea adquirir: ",
-				  "Servicio Mecánico",JOptionPane.YES_NO_CANCEL_OPTION,
-				   JOptionPane.QUESTION_MESSAGE,null,// null para icono por defecto. //Genera un menu para guardar el tipo de servicio
-				  new Object[] { "Auxilio Mecánico", "Grúa", "Cerrajero",},null);
 	
 				
 		int servAux = 0;
@@ -179,7 +177,7 @@ public class main {
 				 
 		
 		//Genera el cliente con los datos dados y lo agrega al ArrayList
-		Cliente user = new Cliente (nombre.getText(), apellido.getText(), localidad.getText(), servicio, tipo1, usuario, pass, servAux, servGrua, servCer);
+		Cliente user = new Cliente (nombre.getText(), apellido.getText(), localidad.getText(), tipo1, usuario, pass, servAux, servGrua, servCer);
 		Usuario.add(user);
 		
 		
@@ -192,47 +190,80 @@ public class main {
 		return Usuario;
 	}
 	
-	public static void ServicioOption(ArrayList<Cliente> lista) {
+	public static void ServicioOption(ArrayList<Cliente> lista, String name, String surname) {
 		int contMeca;
 		int contGrua;
 		int contCerrajero;
 		int distMax = 700;
+		int indice = 0;
+		
+		System.out.println(name + " " + surname);
+		
+		int seleccion = JOptionPane.showOptionDialog( null,"Seleccione el tipo de servicio que usted desea adquirir: ",
+				  "Servicio Mecánico",JOptionPane.YES_NO_CANCEL_OPTION,
+				   JOptionPane.QUESTION_MESSAGE,null,// null para icono por defecto. //Genera un menu para guardar el tipo de servicio
+				  new Object[] { "Auxilio Mecánico", "Grúa", "Cerrajero",},null);
 		
 		
 		
-		
-		for (int i=0; i<lista.size(); i++) {
-			switch (lista.get(i).getServicio()) {
-			case 1: System.out.println("Auxilio Mecánico"); 
-				
-			
-			break;
-			case 2: System.out.println("Grua");
-					if (lista.get(i).getTipo().equalsIgnoreCase("Oro")) {
-						
-					} else {
-						
-					}
-				break;
-			case 3: System.out.println("Cerrajero");
-				break;
-			default:
-				break;
+		for(int i = 0; i<lista.size(); i++) {			//Busca el indice del cliente para ubicarlo en la lista
+			if(lista.get(i).getNombre().equalsIgnoreCase(name) && lista.get(i).getApellido().equalsIgnoreCase(surname)) {
+				indice = i;
 			}
-		
-			
 		}
+		
+		
+		switch(seleccion) {
+			case 0: JOptionPane.showMessageDialog(null, "Usted selecciono Auxilio Mecanico.\nLe quedan ilimitados llamados.");
+					break;
+			case 1: VerificarTipo(lista, name, surname, seleccion, indice);
+					break;
+			case 2: VerificarTipo(lista, name, surname, seleccion, indice); 
+					break;
+		}
+
+		
+	}
+	
+	public static void VerificarTipo(ArrayList<Cliente> lista, String name, String surname, int seleccion, int indice) {
+		int flag = 0;
+		
+		if(lista.get(indice).getTipo().equals("Oro")) {				//Verifica de que tipo es para asi cuantificar las cantidades de servicios
+			if(seleccion == 1) {
+				flag = lista.get(indice).getServicioGrua();
+				flag = flag - 1;
+				lista.get(indice).setServicioGrua(flag);
+				JOptionPane.showMessageDialog(null, "Usted selecciono Servicio de Grua.\nLe quedan " + lista.get(indice).getServicioGrua() + " restantes."); 
+			} else {
+				flag = lista.get(indice).getServicioCer();
+				flag = flag - 1;
+				lista.get(indice).setServicioCer(flag);;
+				JOptionPane.showMessageDialog(null, "Usted selecciono Servicio de Cerrajero.\nLe quedan " + lista.get(indice).getServicioCer() + " restantes.");
+			}
+		} else {
+			if(seleccion == 1) {
+				flag = lista.get(indice).getServicioGrua();
+				flag = flag - 1;
+				lista.get(indice).setServicioGrua(flag);
+				JOptionPane.showMessageDialog(null, "Usted selecciono Servicio de Grua.\nLe quedan " + lista.get(indice).getServicioGrua() + " restantes."); 
+			} else {
+				flag = lista.get(indice).getServicioCer();
+				flag = flag - 1;
+				lista.get(indice).setServicioCer(flag);;
+				JOptionPane.showMessageDialog(null, "Usted selecciono Servicio de Cerrajero.\nLe quedan " + lista.get(indice).getServicioCer() + " restantes.");
+			}
+		}
+		
 		
 	}
 	
 	public static void imprimirClientes(ArrayList<Cliente> lista) {
+		
 		for(Cliente e : lista) {
-			
 			System.out.println("Cliente: " + e.getNombre() + " " + e.getApellido() + ".\nUser: " + e.getUser() + "  Password: " + e.getPassword() + ", es de tipo " + e.getTipo() + "." +
 								"\nLe quedan " + e.getServicioAux() + " Servicios de Auxilio Mecanico." +
 								"\n          " + e.getServicioGrua() + " Servicios de Grua." +
 								"\n          " + e.getServicioCer() + " Servicios de Cerrajero.\n");
-			
 		}
 	}
 	
