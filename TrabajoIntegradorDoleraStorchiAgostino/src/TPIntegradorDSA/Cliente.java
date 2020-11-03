@@ -9,6 +9,7 @@ public class Cliente extends Persona{
 	int servicioAux;
 	int servicioGrua;
 	int servicioCer;
+	
 	public Cliente(String nombre, String apellido, String localidad, int servicio, String tipo, String user,
 			String password, int servicioAux, int servicioGrua, int servicioCer) {
 		super(nombre, apellido);

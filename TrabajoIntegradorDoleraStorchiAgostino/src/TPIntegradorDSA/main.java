@@ -15,7 +15,7 @@ public class main {
 		
 		ArrayList <Cliente> Mecanico = new ArrayList <Cliente>(); 
 		
-		Cliente Lautaro = new Cliente("Lautaro", "Perez", "Plata", "Escobar", "lautaro.perez16", 123, 2);
+		Cliente Lautaro = new Cliente("Lautaro", "Perez", "Escobar", 2 ,"Oro", "lautaro.perez16", "123", 100, 3, 4);
 		
 		Mecanico.add(Lautaro);
 		
@@ -71,11 +71,11 @@ public class main {
 			}
 		
 		String StrPassword = pass.getText();
-		int IntPassword = Integer.parseInt(StrPassword);
+		
 		
 			
 		for (int i=0; i<lista.size(); i++) {
-			if ((lista.get(i).getUsuario().equalsIgnoreCase(user.getText()) && (lista.get(i).getPassowrd()==IntPassword)) ) {
+			if ((lista.get(i).getUser().equalsIgnoreCase(user.getText()) && (lista.get(i).getPassword().equals(StrPassword)))) {
 				register = true;
 			}
 		}	
@@ -151,7 +151,7 @@ public class main {
 				 }
 		
 
-		int tipo = JOptionPane.showOptionDialog( null,"Seleccione el tipo de servicio que usted desea adquirir: ",
+		tipo = JOptionPane.showOptionDialog( null,"Seleccione el tipo de servicio que usted desea adquirir: ",
 						  "Servicio Mecánico",JOptionPane.YES_NO_CANCEL_OPTION,
 						JOptionPane.QUESTION_MESSAGE,null,// null para icono por defecto.
 						new Object[] { "Oro", "Plata",},null);
