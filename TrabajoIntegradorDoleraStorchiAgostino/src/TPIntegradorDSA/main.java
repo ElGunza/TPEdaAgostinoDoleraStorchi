@@ -15,8 +15,8 @@ public class main {
 		
 		ArrayList <Cliente> Mecanico = new ArrayList <Cliente>(); 
 		
-		Cliente Lautaro = new Cliente("Lautaro", "Perez", "Escobar","Oro", "lautaro.perez", "123", 100, 3, 4);
-		Cliente Gian = new Cliente("Gian", "Storki", "Pilar", "Plata", "gian.storchi", "456", 100, 2, 3);
+		Cliente Lautaro = new Cliente("Lautaro", "Perez", "Escobar","Oro", "lautaro.perez", "123", 100, 2, 4, 1000, 0);
+		Cliente Gian = new Cliente("Gian", "Storchi", "Pilar", "Plata", "gian.storchi", "456", 100, 0, 3, 700, 0);
 		
 		Mecanico.add(Lautaro);
 		Mecanico.add(Gian);
@@ -153,6 +153,8 @@ public class main {
 		int servAux = 0;
 		int servGrua = 0;
 		int servCer = 0;
+		int deuda = 0;
+		int cantkm = 0;
 		
 		tipo = JOptionPane.showOptionDialog( null,"Seleccione el tipo de servicio que usted desea adquirir: ",
 						  "Servicio Mecánico",JOptionPane.YES_NO_CANCEL_OPTION,
@@ -160,16 +162,18 @@ public class main {
 						new Object[] { "Oro", "Plata",},null);
 					String tipo1 = "";
 															//Genera un menu para guardar el tipo de cliente
-					if (tipo == 1){
+					if (tipo == 0){
 						tipo1 = "Oro";
 						servAux = 100;
 						servGrua = 3;					//Agrega cantidad de servicios dependiendo del tipo de cliente
 						servCer = 4;
-					}else if(tipo == 2){
+						deuda = 1000;
+					}else if(tipo == 1){
 						tipo1 = "Plata";
 						servAux = 100;
 						servGrua = 2;
 						servCer = 3;
+						deuda = 700;
 					}
 				 
 		
@@ -177,7 +181,7 @@ public class main {
 				 
 		
 		//Genera el cliente con los datos dados y lo agrega al ArrayList
-		Cliente user = new Cliente (nombre.getText(), apellido.getText(), localidad.getText(), tipo1, usuario, pass, servAux, servGrua, servCer);
+		Cliente user = new Cliente (nombre.getText(), apellido.getText(), localidad.getText(), tipo1, usuario, pass, servAux, servGrua, servCer, deuda, cantkm);
 		Usuario.add(user);
 		
 		
@@ -227,30 +231,102 @@ public class main {
 	
 	public static void VerificarTipo(ArrayList<Cliente> lista, String name, String surname, int seleccion, int indice) {
 		int flag = 0;
+		int valor = 0;
+		boolean aux = false;
 		
 		if(lista.get(indice).getTipo().equals("Oro")) {				//Verifica de que tipo es para asi cuantificar las cantidades de servicios
 			if(seleccion == 1) {
 				flag = lista.get(indice).getServicioGrua();
-				flag = flag - 1;
-				lista.get(indice).setServicioGrua(flag);
-				JOptionPane.showMessageDialog(null, "Usted selecciono Servicio de Grua.\nLe quedan " + lista.get(indice).getServicioGrua() + " restantes."); 
+		
+						precioGrua(lista, indice);
+					
+						flag = flag - 1;
+						lista.get(indice).setServicioGrua(flag);
+						if(flag >= 0) {
+							JOptionPane.showMessageDialog(null, "Usted selecciono Servicio de Grua.\nLe quedan " + lista.get(indice).getServicioGrua() + " restantes.");
+						}
+				 
 			} else {
 				flag = lista.get(indice).getServicioCer();
-				flag = flag - 1;
-				lista.get(indice).setServicioCer(flag);;
-				JOptionPane.showMessageDialog(null, "Usted selecciono Servicio de Cerrajero.\nLe quedan " + lista.get(indice).getServicioCer() + " restantes.");
+					if(flag<=0) {
+						JOptionPane.showMessageDialog(null, "No le quedan servicios de Cerrajero disponible, se adicionaran $500.");
+						valor = lista.get(indice).getDeuda();
+						lista.get(indice).setDeuda(valor + 500);
+					} else {
+						flag = flag - 1;
+						lista.get(indice).setServicioCer(flag);;
+						JOptionPane.showMessageDialog(null, "Usted selecciono Servicio de Cerrajero.\nLe quedan " + lista.get(indice).getServicioCer() + " restantes.");
+					}
+				
 			}
 		} else {
 			if(seleccion == 1) {
 				flag = lista.get(indice).getServicioGrua();
-				flag = flag - 1;
-				lista.get(indice).setServicioGrua(flag);
-				JOptionPane.showMessageDialog(null, "Usted selecciono Servicio de Grua.\nLe quedan " + lista.get(indice).getServicioGrua() + " restantes."); 
+					
+					precioGrua(lista, indice);
+					
+						flag = flag - 1;
+						lista.get(indice).setServicioGrua(flag);
+					if(flag >= 0) {
+						JOptionPane.showMessageDialog(null, "Usted selecciono Servicio de Grua.\nLe quedan " + lista.get(indice).getServicioGrua() + " restantes.");
+					}
 			} else {
 				flag = lista.get(indice).getServicioCer();
-				flag = flag - 1;
-				lista.get(indice).setServicioCer(flag);;
-				JOptionPane.showMessageDialog(null, "Usted selecciono Servicio de Cerrajero.\nLe quedan " + lista.get(indice).getServicioCer() + " restantes.");
+				if(flag<=0) {
+					JOptionPane.showMessageDialog(null, "No le quedan servicios de Cerrajero disponible, se adicionaran $500.");
+					valor = lista.get(indice).getDeuda();
+					lista.get(indice).setDeuda(valor + 600);
+				} else {
+					flag = flag - 1;
+					lista.get(indice).setServicioCer(flag);;
+					JOptionPane.showMessageDialog(null, "Usted selecciono Servicio de Cerrajero.\nLe quedan " + lista.get(indice).getServicioCer() + " restantes.");
+				}
+			}
+		
+		}
+	}
+	
+	public static void precioGrua(ArrayList<Cliente> lista, int indice){
+        JTextField localidad = new JTextField();
+        JTextField distancia = new JTextField();
+        Boolean register = false;
+        String value2 = "";
+        int tipo = 0;
+
+        Object[] message = {
+                "Localidad: ", localidad,
+                "Distancia en Km: ", distancia,
+
+        };
+        Component parent = null;
+        int option = JOptionPane.showConfirmDialog(parent, message, "Ingrese En la localidad que se ubica: ", JOptionPane.OK_CANCEL_OPTION);
+        if (option == JOptionPane.OK_OPTION){            //Panel para ingresar los datos
+            String value1 = localidad.getText();
+            value2 = distancia.getText();
+
+        }
+		int distkm = Integer.parseInt(value2);
+	
+		if(lista.get(indice).getTipo().equalsIgnoreCase("Oro")) {		//Validacion para clientes oro
+			if(distkm > 700 || lista.get(indice).getServicioGrua() <= 0) {
+				JOptionPane.showMessageDialog(null, "Superaste los valores maximos, se adicionaran $200.");
+				int extra = lista.get(indice).getDeuda();
+				lista.get(indice).setDeuda(extra + 200);
+			}
+		} else {														//Validacion para clientes plata
+			if(distkm <= 500 || lista.get(indice).getServicioGrua() <= 0) {
+				JOptionPane.showMessageDialog(null, "Superaste la cantidad de servicio disponible, se adicionaran $600.");
+				int extra = lista.get(indice).getDeuda();
+				lista.get(indice).setDeuda(extra + 600);
+			} 
+			if(distkm > 500) {
+				distkm = distkm - 500;
+				distkm = distkm/100;
+				int km = 300*distkm;
+				
+				JOptionPane.showMessageDialog(null, "Superaste la cantidad km alcanzables, se adicionaran " + km + " pesos.");
+				int extra2 = lista.get(indice).getDeuda();
+				lista.get(indice).setDeuda(extra2 + km); 
 			}
 		}
 		
@@ -263,7 +339,8 @@ public class main {
 			System.out.println("Cliente: " + e.getNombre() + " " + e.getApellido() + ".\nUser: " + e.getUser() + "  Password: " + e.getPassword() + ", es de tipo " + e.getTipo() + "." +
 								"\nLe quedan " + e.getServicioAux() + " Servicios de Auxilio Mecanico." +
 								"\n          " + e.getServicioGrua() + " Servicios de Grua." +
-								"\n          " + e.getServicioCer() + " Servicios de Cerrajero.\n");
+								"\n          " + e.getServicioCer() + " Servicios de Cerrajero.\n" +
+								"Debe : " + e.getDeuda() + " pesos.\n");
 		}
 	}
 	

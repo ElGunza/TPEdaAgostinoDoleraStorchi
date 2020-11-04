@@ -8,9 +8,11 @@ public class Cliente extends Persona{
 	int servicioAux;
 	int servicioGrua;
 	int servicioCer;
+	int deuda;
+	int cantkm;
 	
 	public Cliente(String nombre, String apellido, String localidad, String tipo, String user,
-			String password, int servicioAux, int servicioGrua, int servicioCer) {
+			String password, int servicioAux, int servicioGrua, int servicioCer, int deuda, int cantkm) {
 		super(nombre, apellido);
 		this.localidad = localidad;
 		this.tipo = tipo;
@@ -19,6 +21,21 @@ public class Cliente extends Persona{
 		this.servicioAux = servicioAux;
 		this.servicioGrua = servicioGrua;
 		this.servicioCer = servicioCer;
+		this.deuda = deuda;
+		this.cantkm = cantkm;
+	}
+	
+	public int getCantkm() {
+		return cantkm;
+	}
+	public void setCantkm(int cantkm) {
+		this.cantkm = cantkm;
+	}
+	public int getDeuda() {
+		return deuda;
+	}
+	public void setDeuda(int deuda) {
+		this.deuda = deuda;
 	}
 	public String getLocalidad() {
 		return localidad;
