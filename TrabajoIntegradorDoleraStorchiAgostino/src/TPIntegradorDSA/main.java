@@ -2,6 +2,8 @@ package TPIntegradorDSA;
 
 import java.awt.Component;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
@@ -37,8 +39,9 @@ public class main {
 							"1) Registrar nuevo usuario \n"+
 							"2) Ingresar con usuario \n" +
 							"3) Imprimir lista Clientes \n" +
-							"4) Salir \n" +
-							"Ingrese opción del 1 al 4", "Menú Mecánico", JOptionPane.QUESTION_MESSAGE));
+							"4) Imprimir por mayor valor \n" +
+							"5) Salir \n" +
+							"Ingrese opción del 1 al 5", "Menú Mecánico", JOptionPane.QUESTION_MESSAGE));
 		
 			switch(option) {
 			case 1:
@@ -50,6 +53,8 @@ public class main {
 			case 3:	
 				imprimirClientes(a);
 			case 4:
+				imprimirOrdenado(a);
+			case 5:
 				System.exit(0); break;
 			}
 		
@@ -344,4 +349,10 @@ public class main {
 		}
 	}
 	
+	public static void imprimirOrdenado(ArrayList<Cliente> lista) {
+		System.out.println("Clientes ordenados por mayor deuda: ");
+		
+		Collections.sort(lista, Collections.reverseOrder());
+		imprimirClientes(lista);
+	}
 }

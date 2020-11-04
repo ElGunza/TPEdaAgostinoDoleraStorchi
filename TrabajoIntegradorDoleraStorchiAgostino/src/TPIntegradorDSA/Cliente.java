@@ -1,6 +1,6 @@
 package TPIntegradorDSA;
 
-public class Cliente extends Persona{
+public class Cliente extends Persona implements Comparable<Cliente>{
 	String localidad;
 	String tipo;
 	String user;
@@ -79,6 +79,17 @@ public class Cliente extends Persona{
 	}
 	public void setServicioCer(int servicioCer) {
 		this.servicioCer = servicioCer;
+	}
+
+	@Override
+	public int compareTo(Cliente C1) {
+		if (deuda < C1.deuda) {
+			return -1;
+		}
+		if (deuda > C1.deuda) {
+			return 1;
+		}
+		return 0;
 	}
 	
 	
