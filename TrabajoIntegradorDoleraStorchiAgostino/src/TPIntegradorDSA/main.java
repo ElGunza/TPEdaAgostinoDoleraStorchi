@@ -16,11 +16,15 @@ public class main {
 		
 		ArrayList <Cliente> Mecanico = new ArrayList <Cliente>(); 
 		
-		Cliente Lautaro = new Cliente("Lautaro", "Perez", "Escobar","Oro", "lautaro.perez", "123", 100, 2, 4, 1000, 0);
-		Cliente Gian = new Cliente("Gian", "Storchi", "Pilar", "Plata", "gian.storchi", "456", 100, 0, 3, 700, 0);
+		Cliente Lautaro = new Cliente("Lautaro", "Perez", "Escobar","Oro", "lautaro.perez", "123", 100, 2, 4, 1500, 200);
+		Cliente Gian = new Cliente("Gian", "Storchi", "Pilar", "Plata", "gian.storchi", "456", 100, 0, 3, 700, 300);
+		Cliente Enzo = new Cliente("Enzo", "Dolera", "Pilar", "Oro", "enzo.dolera", "123", 100, 3, 4, 1000, 100);
+		Cliente Gonzalo = new Cliente("Gonzalo", "Agostini", "Lujan", "Plata", "gonza.agostini", "456", 100, 2, 3, 1500, 250);
 		
 		Mecanico.add(Lautaro);
 		Mecanico.add(Gian);
+		Mecanico.add(Enzo);
+		Mecanico.add(Gonzalo);
 		
 		menu(Mecanico);
 		
@@ -38,8 +42,11 @@ public class main {
 							"2) Ingresar con usuario \n" +
 							"3) Imprimir lista Clientes \n" +
 							"4) Imprimir por mayor valor \n" +
-							"5) Salir \n" +
-							"Ingrese opción del 1 al 5", "Menú Mecánico", JOptionPane.QUESTION_MESSAGE));
+							"5) Imprimir promedio tipo Cliente \n" +
+							"6) Cliente con mayor deuda \n" +
+							"7) Km recorridos por tipo de cliente \n" +
+							"8) Salir \n" +
+							"Ingrese opción del 1 al 8", "Menú Mecánico", JOptionPane.QUESTION_MESSAGE));
 		
 			switch(option) {
 			case 1:
@@ -56,6 +63,15 @@ public class main {
 				imprimirOrdenado(a);
 				break;
 			case 5:
+				promedioDeuda(a);
+				break;
+			case 6:
+				clienteMayorDeuda(a);
+				break;
+			case 7:
+				kmRecorridos(a);
+				break;
+			case 8:
 				System.exit(0); 
 				break;
 			}
@@ -275,6 +291,7 @@ public class main {
         }
         
 		int distkm = Integer.parseInt(value2);
+		lista.get(indice).setCantkm(distkm);
 	
 		if(lista.get(indice).getTipo().equalsIgnoreCase("Oro")) {		//Validacion para clientes oro
 			if(distkm > 700 || lista.get(indice).getServicioGrua() <= 0) {
@@ -283,7 +300,7 @@ public class main {
 				lista.get(indice).setDeuda(extra + 200);
 			}
 		} else {														//Validacion para clientes plata
-			if(distkm <= 500 || lista.get(indice).getServicioGrua() <= 0) {
+			if(lista.get(indice).getServicioGrua() <= 0) {
 				JOptionPane.showMessageDialog(null, "Superaste la cantidad de servicio disponible, se adicionaran $600.");
 				int extra = lista.get(indice).getDeuda();
 				lista.get(indice).setDeuda(extra + 600);
@@ -307,14 +324,108 @@ public class main {
 								"\nLe quedan " + e.getServicioAux() + " Servicios de Auxilio Mecanico." +
 								"\n          " + e.getServicioGrua() + " Servicios de Grua." +
 								"\n          " + e.getServicioCer() + " Servicios de Cerrajero.\n" +
-								"Debe: " + e.getDeuda() + " pesos.\n");
+								"Debe: " + e.getDeuda() + " pesos. " + 
+								"Recorrio: " + e.getCantkm() + "Kms.\n");
 		}
 	}
 	
 	public static void imprimirOrdenado(ArrayList<Cliente> lista) {
+
 		System.out.println("Clientes ordenados por mayor deuda: ");
 		
 		Collections.sort(lista, Collections.reverseOrder());
 		imprimirClientes(lista);
+	}
+	
+	public static void clienteMayorDeuda(ArrayList<Cliente> lista) {
+		int deudaOro = 0;
+		String nombreOro = "";
+		String apellidoOro = "";
+		int deudaPlata = 0;
+		String nombrePlata = "";
+		String apellidoPlata = "";
+		
+		for(Cliente c : lista) {
+			if(c.getTipo().equalsIgnoreCase("Oro")) {				//Guarda el cliente que mas debe de Oro y Plata
+				if(deudaOro < c.getDeuda()) {
+					deudaOro = c.getDeuda();
+					nombreOro = c.getNombre();
+					apellidoOro = c.getApellido();
+				}
+			} else {
+				if(deudaPlata < c.getDeuda()) {
+					deudaPlata = c.getDeuda();
+					nombrePlata = c.getNombre();
+					apellidoPlata = c.getApellido();
+				}
+			}
+		}
+		
+		JOptionPane.showMessageDialog(null, "El cliente que mas pago de tipo oro es: " + nombreOro + " " + apellidoOro + 
+																					", con una deuda de: " + deudaOro + " pesos." +
+											"\nEl cliente que mas pago de tipo plata es: " + nombrePlata + " " + apellidoPlata +
+																					", con una deuda de: " + deudaPlata + " pesos.");
+		
+	}
+	
+	public static void promedioDeuda(ArrayList<Cliente> lista) {
+		int deudaPlata = 0;
+		int deudaOro = 0;
+		int contPlata = 0;
+		int contOro = 0;
+		float promOro = 0;
+		float promPlata = 0;
+		
+		
+		for(int i=0; i<lista.size(); i++) {
+			if(lista.get(i).getTipo().equalsIgnoreCase("Oro")) {				//Suma deudas de los clientes tipo Oro
+				deudaOro = deudaOro + lista.get(i).getDeuda();
+				contOro++;
+			} else if(lista.get(i).getTipo().equalsIgnoreCase("Plata")) {		//Suma deudas de los clientes tipo Plata
+				deudaPlata = deudaPlata + lista.get(i).getDeuda();
+				contPlata++;
+			}
+		}
+		
+		promOro = deudaOro / contOro;											//Genera un promedio
+		promPlata = deudaPlata / contPlata;
+		
+		System.out.println("Clientes que pagaron menos del promedio (Oro): ");		
+		for(Cliente e : lista) {
+			if(e.getTipo().equalsIgnoreCase("Oro")) {
+				if(e.getDeuda() < promOro) {
+					System.out.println(e.getNombre() + " " + e.getApellido() + ", debe: " + e.getDeuda());
+				}
+			}
+		}
+		System.out.println("\nClientes que pagaron menos del promedio (Plata): ");
+		for(Cliente e : lista) {
+			if(e.getTipo().equalsIgnoreCase("Plata")) {
+				if(e.getDeuda() < promPlata) {
+					System.out.println(e.getNombre() + " " + e.getApellido() + ", debe: " + e.getDeuda());
+				}
+			}
+		}
+		
+		JOptionPane.showMessageDialog(null, "El promedio de deuda del cliente tipo oro es de: " + promOro + "\nEl promedio de deuda del cliente tipo plata es de: " + promPlata);
+		
+	}
+
+	public static void kmRecorridos(ArrayList<Cliente> lista) {
+		int contKmOro = 0;
+		int contKmPlata = 0;
+		
+		
+		for(Cliente p : lista) {
+			if(p.getTipo().equalsIgnoreCase("Oro")) {			//Valida si es de tipo Oro y suma sus kms
+				contKmOro = contKmOro + p.getCantkm();
+			} else {											//Si no es oro, es de tipo plata y suma sus kms
+				contKmPlata = contKmPlata + p.getCantkm();
+			}
+		}
+		
+		
+		JOptionPane.showMessageDialog(null, "Los clientes de tipo Oro recorrieron un total de: " + contKmOro + " kms en total.\n" + 
+											"Los clientes de tipo Plata recorrieron un total de: " + contKmPlata + " kms en total.");
 	}
 }

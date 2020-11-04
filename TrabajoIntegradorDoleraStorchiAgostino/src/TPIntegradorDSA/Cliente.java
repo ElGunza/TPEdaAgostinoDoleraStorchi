@@ -43,7 +43,6 @@ public class Cliente extends Persona implements Comparable<Cliente>{
 	public void setLocalidad(String localidad) {
 		this.localidad = localidad;
 	}
-
 	public String getTipo() {
 		return tipo;
 	}
