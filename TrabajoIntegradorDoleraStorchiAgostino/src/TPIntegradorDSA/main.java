@@ -10,7 +10,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 
-
 public class main {
 
 	public static void main(String[] args) {
@@ -33,7 +32,6 @@ public class main {
 	public static void menu(ArrayList <Cliente> a) {
 		ArrayList <Cliente> array = new ArrayList<Cliente>();
 		
-		
 		do {
 			int option = Integer.parseInt(JOptionPane.showInputDialog(null,
 							"1) Registrar nuevo usuario \n"+
@@ -49,13 +47,17 @@ public class main {
 				a.addAll(array);
 				break;
 			case 2:
-				login(a); break;
+				login(a); 
+				break;
 			case 3:	
 				imprimirClientes(a);
+				break;
 			case 4:
 				imprimirOrdenado(a);
+				break;
 			case 5:
-				System.exit(0); break;
+				System.exit(0); 
+				break;
 			}
 		
 		} while(true);
@@ -68,7 +70,6 @@ public class main {
 		Boolean register = false;
 		String name = "";
 		String surname = "";
-		int matricula = 0;
 		
 		Object[] message = {
 			    "Usuario:", user,
@@ -93,7 +94,7 @@ public class main {
 			}
 		}	
 			
-		if (register == false) {						//Devuelve un mensaje si esta o no registrado
+		if (register == false) {							//Devuelve un mensaje si esta o no registrado
 			JOptionPane.showMessageDialog(null, "Las credenciales son incorrectas o usted no está registrado");
 		} else {
 			JOptionPane.showMessageDialog(null, "¡Inicio de sesión con éxito!");
@@ -109,7 +110,6 @@ public class main {
 		JTextField nombre = new JTextField();
 		JTextField apellido = new JTextField();
 		JTextField localidad = new JTextField();
-		Boolean register = false;
 		int tipo = 0;
 		
 		Object[] message = {
@@ -119,7 +119,7 @@ public class main {
 		};
 		Component parent = null;
 		int option = JOptionPane.showConfirmDialog(parent, message, "Ingrese sus datos personales: ", JOptionPane.OK_CANCEL_OPTION);
-		if (option == JOptionPane.OK_OPTION){			//Panel para ingresar los datos
+		if (option == JOptionPane.OK_OPTION){				//Panel para ingresar los datos
 		    String value1 = nombre.getText();
 		    String value2 = apellido.getText();
 		    String value4 = localidad.getText();
@@ -129,32 +129,12 @@ public class main {
 		int password = (int) (Math.random()*10000);
 		String pass = String.valueOf(password);
 		
+		//Genera el usuario
 		String usuario = nombre.getText().toLowerCase() + "."+ apellido.getText().toLowerCase();
 		System.out.println(usuario);
 		System.out.println(password);
-		
-		
-		/*
-		do {
-			option = Integer.parseInt(JOptionPane.showInputDialog(null,
-											"1) Auxilio Mecánico \n" +
-											"2) Grúa \n" +
-											"3) Cerrajero \n" +
-											"4) Salir " +
-											"Ingrese opción del 1 al 4", "Servicios Mecánicos", JOptionPane.QUESTION_MESSAGE));
-			switch(option) {
-				case 1: servicio = 1 ;
-				register = true; break;
-				case 2: servicio = 2;
-				register = true; break;
-				case 3: servicio = 3;
-				register = true; break;
-				case 4: System.exit(0); break;
-			}
-		} while(register = false);
-		*/
-	
 				
+		
 		int servAux = 0;
 		int servGrua = 0;
 		int servCer = 0;
@@ -163,14 +143,14 @@ public class main {
 		
 		tipo = JOptionPane.showOptionDialog( null,"Seleccione el tipo de servicio que usted desea adquirir: ",
 						  "Servicio Mecánico",JOptionPane.YES_NO_CANCEL_OPTION,
-						JOptionPane.QUESTION_MESSAGE,null,// null para icono por defecto.
+						JOptionPane.QUESTION_MESSAGE,null,	// null para icono por defecto.
 						new Object[] { "Oro", "Plata",},null);
 					String tipo1 = "";
 															//Genera un menu para guardar el tipo de cliente
 					if (tipo == 0){
 						tipo1 = "Oro";
 						servAux = 100;
-						servGrua = 3;					//Agrega cantidad de servicios dependiendo del tipo de cliente
+						servGrua = 3;						//Agrega cantidad de servicios dependiendo del tipo de cliente
 						servCer = 4;
 						deuda = 1000;
 					}else if(tipo == 1){
@@ -180,9 +160,6 @@ public class main {
 						servCer = 3;
 						deuda = 700;
 					}
-				 
-		
-		
 				 
 		
 		//Genera el cliente con los datos dados y lo agrega al ArrayList
@@ -200,13 +177,7 @@ public class main {
 	}
 	
 	public static void ServicioOption(ArrayList<Cliente> lista, String name, String surname) {
-		int contMeca;
-		int contGrua;
-		int contCerrajero;
-		int distMax = 700;
 		int indice = 0;
-		
-		System.out.println(name + " " + surname);
 		
 		int seleccion = JOptionPane.showOptionDialog( null,"Seleccione el tipo de servicio que usted desea adquirir: ",
 				  "Servicio Mecánico",JOptionPane.YES_NO_CANCEL_OPTION,
@@ -214,13 +185,11 @@ public class main {
 				  new Object[] { "Auxilio Mecánico", "Grúa", "Cerrajero",},null);
 		
 		
-		
 		for(int i = 0; i<lista.size(); i++) {			//Busca el indice del cliente para ubicarlo en la lista
 			if(lista.get(i).getNombre().equalsIgnoreCase(name) && lista.get(i).getApellido().equalsIgnoreCase(surname)) {
 				indice = i;
 			}
 		}
-		
 		
 		switch(seleccion) {
 			case 0: JOptionPane.showMessageDialog(null, "Usted selecciono Auxilio Mecanico.\nLe quedan ilimitados llamados.");
@@ -230,14 +199,12 @@ public class main {
 			case 2: VerificarTipo(lista, name, surname, seleccion, indice); 
 					break;
 		}
-
 		
 	}
 	
 	public static void VerificarTipo(ArrayList<Cliente> lista, String name, String surname, int seleccion, int indice) {
 		int flag = 0;
 		int valor = 0;
-		boolean aux = false;
 		
 		if(lista.get(indice).getTipo().equals("Oro")) {				//Verifica de que tipo es para asi cuantificar las cantidades de servicios
 			if(seleccion == 1) {
@@ -262,7 +229,6 @@ public class main {
 						lista.get(indice).setServicioCer(flag);;
 						JOptionPane.showMessageDialog(null, "Usted selecciono Servicio de Cerrajero.\nLe quedan " + lista.get(indice).getServicioCer() + " restantes.");
 					}
-				
 			}
 		} else {
 			if(seleccion == 1) {
@@ -294,9 +260,7 @@ public class main {
 	public static void precioGrua(ArrayList<Cliente> lista, int indice){
         JTextField localidad = new JTextField();
         JTextField distancia = new JTextField();
-        Boolean register = false;
         String value2 = "";
-        int tipo = 0;
 
         Object[] message = {
                 "Localidad: ", localidad,
@@ -305,11 +269,11 @@ public class main {
         };
         Component parent = null;
         int option = JOptionPane.showConfirmDialog(parent, message, "Ingrese En la localidad que se ubica: ", JOptionPane.OK_CANCEL_OPTION);
-        if (option == JOptionPane.OK_OPTION){            //Panel para ingresar los datos
-            String value1 = localidad.getText();
+        if (option == JOptionPane.OK_OPTION){            				//Panel para ingresar los datos
+            String value1 = localidad.getText();	
             value2 = distancia.getText();
-
         }
+        
 		int distkm = Integer.parseInt(value2);
 	
 		if(lista.get(indice).getTipo().equalsIgnoreCase("Oro")) {		//Validacion para clientes oro
@@ -334,8 +298,6 @@ public class main {
 				lista.get(indice).setDeuda(extra2 + km); 
 			}
 		}
-		
-		
 	}
 	
 	public static void imprimirClientes(ArrayList<Cliente> lista) {
@@ -345,7 +307,7 @@ public class main {
 								"\nLe quedan " + e.getServicioAux() + " Servicios de Auxilio Mecanico." +
 								"\n          " + e.getServicioGrua() + " Servicios de Grua." +
 								"\n          " + e.getServicioCer() + " Servicios de Cerrajero.\n" +
-								"Debe : " + e.getDeuda() + " pesos.\n");
+								"Debe: " + e.getDeuda() + " pesos.\n");
 		}
 	}
 	
