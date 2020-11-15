@@ -16,10 +16,10 @@ public class main {
 		
 		ArrayList <Cliente> Mecanico = new ArrayList <Cliente>(); 
 		
-		Cliente Lautaro = new Cliente("Lautaro", "Perez", "Escobar","Oro", "lautaro.perez", "123", 100, 2, 4, 1500, 200);
-		Cliente Gian = new Cliente("Gian", "Storchi", "Pilar", "Plata", "gian.storchi", "456", 100, 0, 3, 700, 300);
-		Cliente Enzo = new Cliente("Enzo", "Dolera", "Pilar", "Oro", "enzo.dolera", "123", 100, 3, 4, 1000, 100);
-		Cliente Gonzalo = new Cliente("Gonzalo", "Agostini", "Lujan", "Plata", "gonza.agostini", "456", 100, 2, 3, 1500, 250);
+		Cliente Lautaro = new Cliente("Lautaro", "Perez", "Escobar","Oro", "lautaro.perez", "123", 100, 2, 4, 1500, 0);
+		Cliente Gian = new Cliente("Gian", "Storchi", "Pilar", "Plata", "gian.storchi", "456", 100, 0, 3, 700, 0);
+		Cliente Enzo = new Cliente("Enzo", "Dolera", "Pilar", "Oro", "enzo.dolera", "123", 100, 3, 4, 1000, 0);
+		Cliente Gonzalo = new Cliente("Gonzalo", "Agostini", "Lujan", "Plata", "gonza.agostini", "456", 100, 2, 3, 1500, 0);
 		
 		Mecanico.add(Lautaro);
 		Mecanico.add(Gian);
@@ -28,10 +28,8 @@ public class main {
 		
 		menu(Mecanico);
 		
-
 	}
 
-	
 	
 	public static void menu(ArrayList <Cliente> a) {
 		ArrayList <Cliente> array = new ArrayList<Cliente>();
@@ -50,7 +48,7 @@ public class main {
 		
 			switch(option) {
 			case 1:
-				array= register(a);
+				array = register(a);
 				a.addAll(array);
 				break;
 			case 2:
@@ -97,11 +95,11 @@ public class main {
 			    String value1 = user.getText();				//Panel para ingresar credenciales
 			    String value2 = pass.getText();
 			}
-		
+
+
 		String StrPassword = pass.getText();				//Convierte password en String
-		
-		
-			
+
+
 		for (int i=0; i<lista.size(); i++) {
 			if ((lista.get(i).getUser().equalsIgnoreCase(user.getText()) && (lista.get(i).getPassword().equals(StrPassword)))) {
 				register = true;							//Valida si existe un cliente con las credenciales dadas
@@ -111,7 +109,7 @@ public class main {
 		}	
 			
 		if (register == false) {							//Devuelve un mensaje si esta o no registrado
-			JOptionPane.showMessageDialog(null, "Las credenciales son incorrectas o usted no está registrado");
+			JOptionPane.showMessageDialog(null, "Las credenciales son incorrectas o usted no está registrado.");
 		} else {
 			JOptionPane.showMessageDialog(null, "¡Inicio de sesión con éxito!");
 			ServicioOption(lista, name, surname);
@@ -144,13 +142,13 @@ public class main {
 		//Crea password numerica y la convierte a string
 		int password = (int) (Math.random()*10000);
 		String pass = String.valueOf(password);
-		
+
 		//Genera el usuario
 		String usuario = nombre.getText().toLowerCase() + "."+ apellido.getText().toLowerCase();
 		System.out.println(usuario);
 		System.out.println(password);
-				
-		
+
+
 		int servAux = 0;
 		int servGrua = 0;
 		int servCer = 0;
@@ -184,7 +182,7 @@ public class main {
 		
 		
 		//Escribe mensaje avisando que se cargo correctamente y los datos del usuario
-		String message2 ="";
+		String message2 = "";
 		
 		message2 = message2 + "	Los datos del usuario son:\n\n "+ usuario + " \n"+ password + "\n\n >>Recuérdelos para volver a iniciar sesión<< " ;
 		JOptionPane.showMessageDialog(null, message2);
@@ -197,11 +195,11 @@ public class main {
 		
 		int seleccion = JOptionPane.showOptionDialog( null,"Seleccione el tipo de servicio que usted desea adquirir: ",
 				  "Servicio Mecánico",JOptionPane.YES_NO_CANCEL_OPTION,
-				   JOptionPane.QUESTION_MESSAGE,null,// null para icono por defecto. //Genera un menu para guardar el tipo de servicio
+				   JOptionPane.QUESTION_MESSAGE,null,		// null para icono por defecto. //Genera un menu para guardar el tipo de servicio
 				  new Object[] { "Auxilio Mecánico", "Grúa", "Cerrajero",},null);
 		
 		
-		for(int i = 0; i<lista.size(); i++) {			//Busca el indice del cliente para ubicarlo en la lista
+		for(int i = 0; i<lista.size(); i++) {				//Busca el indice del cliente para ubicarlo en la lista
 			if(lista.get(i).getNombre().equalsIgnoreCase(name) && lista.get(i).getApellido().equalsIgnoreCase(surname)) {
 				indice = i;
 			}
@@ -226,7 +224,7 @@ public class main {
 			if(seleccion == 1) {
 				flag = lista.get(indice).getServicioGrua();
 		
-						precioGrua(lista, indice);
+						precioGrua(lista, indice);					//Pregunta localidad y cantidad de kms
 					
 						flag = flag - 1;
 						lista.get(indice).setServicioGrua(flag);
@@ -246,11 +244,12 @@ public class main {
 						JOptionPane.showMessageDialog(null, "Usted selecciono Servicio de Cerrajero.\nLe quedan " + lista.get(indice).getServicioCer() + " restantes.");
 					}
 			}
+			
 		} else {
 			if(seleccion == 1) {
 				flag = lista.get(indice).getServicioGrua();
 					
-					precioGrua(lista, indice);
+						precioGrua(lista, indice);					//Pregunta localidad y cantidad de kms
 					
 						flag = flag - 1;
 						lista.get(indice).setServicioGrua(flag);
@@ -273,26 +272,45 @@ public class main {
 		}
 	}
 	
-	public static void precioGrua(ArrayList<Cliente> lista, int indice){
+	public static void precioGrua(ArrayList<Cliente> lista, int indice){			//Pide kms y realiza una validacion por si se paso de los intentos o de los kms que puede realizar
         JTextField localidad = new JTextField();
         JTextField distancia = new JTextField();
         String value2 = "";
+        int distkm = 0;
+        int kmactuales = 0;
+        boolean resultado = false;
+        
 
         Object[] message = {
                 "Localidad: ", localidad,
                 "Distancia en Km: ", distancia,
-
         };
-        Component parent = null;
-        int option = JOptionPane.showConfirmDialog(parent, message, "Ingrese En la localidad que se ubica: ", JOptionPane.OK_CANCEL_OPTION);
-        if (option == JOptionPane.OK_OPTION){            				//Panel para ingresar los datos
-            String value1 = localidad.getText();	
-            value2 = distancia.getText();
-        }
         
-		int distkm = Integer.parseInt(value2);
-		lista.get(indice).setCantkm(distkm);
+        
+        do {
+        	Component parent = null;
+        	int option = JOptionPane.showConfirmDialog(parent, message, "Ingrese En la localidad que se ubica: ", JOptionPane.OK_CANCEL_OPTION);
+        		if (option == JOptionPane.OK_OPTION){            		//Panel para ingresar los datos
+        			String value1 = localidad.getText();	
+        			value2 = distancia.getText();
+        		}
+        
+        		try {
+        			distkm = Integer.parseInt(value2);
+        			resultado = true;
+        		} catch(NumberFormatException excepcion) {
+        			JOptionPane.showMessageDialog(null, "Error, la distancia debe ser expresada en numeros.");
+        			resultado = false;
+        		}
+        		
+        }while(resultado == false);
+        
+        
+		kmactuales = lista.get(indice).getCantkm();						//Guarda los km realizados por el cliente
+		kmactuales = kmactuales + distkm;								
+		lista.get(indice).setCantkm(kmactuales);
 	
+		
 		if(lista.get(indice).getTipo().equalsIgnoreCase("Oro")) {		//Validacion para clientes oro
 			if(distkm > 700 || lista.get(indice).getServicioGrua() <= 0) {
 				JOptionPane.showMessageDialog(null, "Superaste los valores maximos, se adicionaran $200.");
@@ -305,7 +323,7 @@ public class main {
 				int extra = lista.get(indice).getDeuda();
 				lista.get(indice).setDeuda(extra + 600);
 			} 
-			if(distkm > 500) {
+			if(distkm > 500) {					
 				distkm = distkm - 500;
 				distkm = distkm/100;
 				int km = 300*distkm;
@@ -317,7 +335,7 @@ public class main {
 		}
 	}
 	
-	public static void imprimirClientes(ArrayList<Cliente> lista) {
+	public static void imprimirClientes(ArrayList<Cliente> lista) {		//Imprime lista de clientes por consola
 		
 		for(Cliente e : lista) {
 			System.out.println("Cliente: " + e.getNombre() + " " + e.getApellido() + ".\nUser: " + e.getUser() + "  Password: " + e.getPassword() + ", es de tipo " + e.getTipo() + "." +
@@ -329,15 +347,16 @@ public class main {
 		}
 	}
 	
-	public static void imprimirOrdenado(ArrayList<Cliente> lista) {
+	public static void imprimirOrdenado(ArrayList<Cliente> lista) {		//Imprime lista de clientes ordenados por mayor deuda
 
 		System.out.println("Clientes ordenados por mayor deuda: ");
 		
 		Collections.sort(lista, Collections.reverseOrder());
+		
 		imprimirClientes(lista);
 	}
 	
-	public static void clienteMayorDeuda(ArrayList<Cliente> lista) {
+	public static void clienteMayorDeuda(ArrayList<Cliente> lista) {	//Busca el cliente con mayor deuda de cada categoria
 		int deudaOro = 0;
 		String nombreOro = "";
 		String apellidoOro = "";
@@ -368,7 +387,7 @@ public class main {
 		
 	}
 	
-	public static void promedioDeuda(ArrayList<Cliente> lista) {
+	public static void promedioDeuda(ArrayList<Cliente> lista) {				//Genera un promedio de las deudas de cada categoria y busca a los clientes por debajo de este promedio
 		int deudaPlata = 0;
 		int deudaOro = 0;
 		int contPlata = 0;
@@ -398,6 +417,7 @@ public class main {
 				}
 			}
 		}
+		
 		System.out.println("\nClientes que pagaron menos del promedio (Plata): ");
 		for(Cliente e : lista) {
 			if(e.getTipo().equalsIgnoreCase("Plata")) {
@@ -411,19 +431,18 @@ public class main {
 		
 	}
 
-	public static void kmRecorridos(ArrayList<Cliente> lista) {
+	public static void kmRecorridos(ArrayList<Cliente> lista) {				//Escribe la cantidad total de km recorridos por los clientes
 		int contKmOro = 0;
 		int contKmPlata = 0;
 		
 		
 		for(Cliente p : lista) {
-			if(p.getTipo().equalsIgnoreCase("Oro")) {			//Valida si es de tipo Oro y suma sus kms
+			if(p.getTipo().equalsIgnoreCase("Oro")) {						//Valida si es de tipo Oro y suma sus kms
 				contKmOro = contKmOro + p.getCantkm();
-			} else {											//Si no es oro, es de tipo plata y suma sus kms
+			} else {														//Si no es oro, es de tipo plata y suma sus kms
 				contKmPlata = contKmPlata + p.getCantkm();
 			}
 		}
-		
 		
 		JOptionPane.showMessageDialog(null, "Los clientes de tipo Oro recorrieron un total de: " + contKmOro + " kms en total.\n" + 
 											"Los clientes de tipo Plata recorrieron un total de: " + contKmPlata + " kms en total.");
